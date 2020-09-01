@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A web application (basically a game) that you play and try to survive as long as you can. You're a character (you customize the stats) who is thrown into the woods and hit with a bunch of random events that have different outcomes. These outcomes will have various effects on your player including health, hunger, an inventory system, and more. It's just a simple idea right now but I plan on adding a lot more to it as time goes on. But remember it is react, I can only do so much lol.
 
 ## Available Scripts
 
