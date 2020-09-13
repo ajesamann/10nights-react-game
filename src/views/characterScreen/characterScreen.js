@@ -27,7 +27,7 @@ export default function CharacterScreen(props) {
           <div className="character-health stat">
             Health:{" "}
             <span
-              onClick={() => props.decreaseStat("health")}
+              onClick={() => props.decreaseStat("health", 1)}
               className="minus"
               id="health-option-minus"
             >
@@ -35,7 +35,7 @@ export default function CharacterScreen(props) {
             </span>
             {props.characterInfo.stats.health}
             <span
-              onClick={() => props.increaseStat("health")}
+              onClick={() => props.increaseStat("health", 1)}
               className="plus"
               id="health-option-plus"
             >
@@ -45,7 +45,7 @@ export default function CharacterScreen(props) {
           <div className="character-strength stat">
             Strength:{" "}
             <span
-              onClick={() => props.decreaseStat("strength")}
+              onClick={() => props.decreaseStat("strength", 1)}
               className="minus"
               id="strength-option-minus"
             >
@@ -53,7 +53,7 @@ export default function CharacterScreen(props) {
             </span>
             {props.characterInfo.stats.strength}
             <span
-              onClick={() => props.increaseStat("strength")}
+              onClick={() => props.increaseStat("strength", 1)}
               className="plus"
               id="strength-option-plus"
             >
@@ -63,7 +63,7 @@ export default function CharacterScreen(props) {
           <div className="character-intellect stat">
             Intellect:{" "}
             <span
-              onClick={() => props.decreaseStat("intellect")}
+              onClick={() => props.decreaseStat("intellect", 1)}
               className="minus"
               id="intellect-option-minus"
             >
@@ -71,7 +71,7 @@ export default function CharacterScreen(props) {
             </span>
             {props.characterInfo.stats.intellect}
             <span
-              onClick={() => props.increaseStat("intellect")}
+              onClick={() => props.increaseStat("intellect", 1)}
               className="plus"
               id="intellect-option-plus"
             >
@@ -91,7 +91,16 @@ export default function CharacterScreen(props) {
           >
             Back to menu
           </button>
-          <button className="play">Enter the night</button>
+          <button
+            className="play"
+            onClick={
+              props.characterInfo.upgradePoints !== 0
+                ? null
+                : () => props.navigate("night")
+            }
+          >
+            Enter the night
+          </button>
         </div>
       </div>
     </div>

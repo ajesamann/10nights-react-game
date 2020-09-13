@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import HomeScreen from "./views/homeScreen/homeScreen.js";
 import CharacterScreen from "./views/characterScreen/characterScreen.js";
+import NightScreen from "./views/nightScreen/nightScreen.js";
 
 class App extends Component {
   changeScreen = (screen) => {
@@ -43,12 +44,23 @@ class App extends Component {
             navigate={this.changeScreen}
           />
         );
+      } else if (
+        this.state.screens[i].view &&
+        this.state.screens[i].screen === "night"
+      ) {
+        return (
+          <NightScreen
+            statBarPercentages={this.getHealthPercentage}
+            loseHealth={this.loseHealth}
+            characterInfo={this.state.character}
+          />
+        );
       }
     }
   };
 
   //decrease the stat in the character customization menu
-  decreaseStat = (stat) => {
+  decreaseStat = (stat, amount) => {
     let character = this.state.character;
     let upgradePoints = character.upgradePoints;
 
@@ -56,25 +68,26 @@ class App extends Component {
       return;
     } else {
       if (stat === "health" && character.stats.health > 10) {
-        character.stats.health = character.stats.health - 1;
-        character.upgradePoints = character.upgradePoints + 1;
+        character.stats.health = character.stats.health + amount;
+        character.stats.maxHealth = character.stats.maxHealth + amount;
+        character.upgradePoints = character.upgradePoints + amount;
       }
 
       if (stat === "intellect" && character.stats.intellect > 10) {
-        character.stats.intellect = character.stats.intellect - 1;
-        character.upgradePoints = character.upgradePoints + 1;
+        character.stats.intellect = character.stats.intellect - amount;
+        character.upgradePoints = character.upgradePoints + amount;
       }
 
       if (stat === "strength" && character.stats.strength > 10) {
-        character.stats.strength = character.stats.strength - 1;
-        character.upgradePoints = character.upgradePoints + 1;
+        character.stats.strength = character.stats.strength - amount;
+        character.upgradePoints = character.upgradePoints + amount;
       }
 
       this.setState({ character });
     }
   };
   //increase the stat in the character customization menu
-  increaseStat = (stat) => {
+  increaseStat = (stat, amount) => {
     let character = this.state.character;
     let upgradePoints = character.upgradePoints;
 
@@ -82,21 +95,45 @@ class App extends Component {
       return;
     } else {
       if (stat === "health") {
-        character.stats.health = character.stats.health + 1;
-        character.upgradePoints = character.upgradePoints - 1;
+        character.stats.health = character.stats.health + amount;
+        character.stats.maxHealth = character.stats.maxHealth + amount;
+        character.upgradePoints = character.upgradePoints - amount;
       }
 
       if (stat === "intellect") {
-        character.stats.intellect = character.stats.intellect + 1;
-        character.upgradePoints = character.upgradePoints - 1;
+        character.stats.intellect = character.stats.intellect + amount;
+        character.upgradePoints = character.upgradePoints - amount;
       }
 
       if (stat === "strength") {
-        character.stats.strength = character.stats.strength + 1;
-        character.upgradePoints = character.upgradePoints - 1;
+        character.stats.strength = character.stats.strength + amount;
+        character.upgradePoints = character.upgradePoints - amount;
       }
 
       this.setState({ character });
+    }
+  };
+
+  getHealthPercentage = (stat) => {
+    let maxHealth = this.state.character.stats.maxHealth;
+    let currentHealth = this.state.character.stats.health;
+    let maxHunger = this.state.character.stats.maxHunger;
+    let currentHunger = this.state.character.stats.hunger;
+    let maxThirst = this.state.character.stats.maxThirst;
+    let currentThirst = this.state.character.stats.thirst;
+
+    let currentHealthPercentage = Math.floor((currentHealth / maxHealth) * 100);
+
+    let currentHungerPercentage = Math.floor((currentHunger / maxHunger) * 100);
+
+    let currentThirstPercentage = Math.floor((currentThirst / maxThirst) * 100);
+
+    if (stat === "hunger") {
+      return currentHungerPercentage;
+    } else if (stat === "thirst") {
+      return currentThirstPercentage;
+    } else if (stat === "health") {
+      return currentHealthPercentage;
     }
   };
 
@@ -112,12 +149,16 @@ class App extends Component {
     ],
     character: {
       stats: {
+        maxHealth: 10,
         health: 10,
-        water: 10,
+        maxThirst: 10,
+        thirst: 10,
+        maxHunger: 10,
         hunger: 10,
         strength: 10,
         intellect: 10,
       },
+      nightsSurvived: 0,
       upgradePoints: 5,
       inventory: [],
       weapon: "",
