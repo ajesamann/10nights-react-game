@@ -50,7 +50,7 @@ class App extends Component {
       ) {
         return (
           <NightScreen
-            statBarPercentages={this.getHealthPercentage}
+            statBarPercentages={this.getPercentage}
             loseHealth={this.loseHealth}
             characterInfo={this.state.character}
           />
@@ -114,7 +114,7 @@ class App extends Component {
     }
   };
 
-  getHealthPercentage = (stat) => {
+  getPercentage = (stat) => {
     let maxHealth = this.state.character.stats.maxHealth;
     let currentHealth = this.state.character.stats.health;
     let maxHunger = this.state.character.stats.maxHunger;
@@ -143,7 +143,6 @@ class App extends Component {
       { screen: "home", view: true },
       { screen: "settings", view: false },
       { screen: "character", view: false },
-      { screen: "day", view: false },
       { screen: "night", view: false },
       { screen: "inventory", view: false },
     ],
